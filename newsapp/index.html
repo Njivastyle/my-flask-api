@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>My News App</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    margin: 0;
+    padding: 10px;
+}
+h2 {
+    text-align: center;
+}
+.buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 20px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+.card {
+    background: #1e293b;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+}
+.card p {
+    color: #cbd5e1;
+}
+</style>
+</head>
+
+<body>
+
+<h2>📰 My News App</h2>
+
+<div class="buttons">
+    <button onclick="loadNews('general')">Top</button>
+    <button onclick="loadNews('sports')">Sports</button>
+    <button onclick="loadNews('business')">Crypto</button>
+</div>
+
+<div id="news">Loading news...</div>
+
+<script>
+function loadNews(category) {
+    document.getElementById("news").innerHTML = "Loading...";
+
+    fetch(`http://127.0.0.1:5000/news?category=${category}`)
+    .then(res => res.json())
+    .then(data => {
+        let html = "";
+        data.articles.forEach(item => {
+            html += `
+            <div class="card">
+                <h4>${item.title}</h4>
+                <p>${item.description || ""}</p>
+            </div>`;
+        });
+        document.getElementById("news").innerHTML = html;
+    });
+}
+
+loadNews("general");
+</script>
+
+</body>
+</html>
